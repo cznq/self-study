@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+ <style>
+ html,body{
+   height: 100%;
+ }
+ a{text-decoration: none;}
+ .box{
+   text-align: center;
+ }
+ .btn{
+   display:inline-block;
+   height: 30px;
+   line-height: 30px;
+   border:1px solid #ccc;
+   background-color: #fff;
+   padding:0 10px;
+   margin-right:50px;
+   color:#333;
+ }
+ .btn:hover{
+   background-color:#eee;
+ }
+ .loading{
+   position:fixed;
+   top:0;
+   left:0;
+   width: 100%;
+   height: 100%;
+   background-color: #eee;
+   text-align: center;
+   font-size: 30px;
+ }
+ .progress {
+   margin-top:300px;
+ }
+ </style>
+<body>
+  <div class="box">
+    <img width='300' height='300' src="http://img3.imgtn.bdimg.com/it/u=2219051718,2119247485&fm=11&gp=0.jpg" alt="pic" id="img">
+    <p>
+      <a href="javascript:;" class="btn" data-control ="pre">上一页</a>
+      <a href="javascript:;" class="btn" data-control ="next">下一页</a>
+    </p>
+  </div>
+  <div class="loading">
+    <div class="progress">
+      0%
+    </div>
+  </div>
+</body>
+<script src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js"></script>
+<script src="preload.js"></script>
+<script>
+var imgs = [
+"http://img3.imgtn.bdimg.com/it/u=2219051718,2119247485&fm=11&gp=0.jpg",
+"http://img2.imgtn.bdimg.com/it/u=1084930267,1776589177&fm=23&gp=0.jpg",
+"http://img1.imgtn.bdimg.com/it/u=108400751,3808882652&fm=23&gp=0.jpg",
+"http://img1.imgtn.bdimg.com/it/u=108400751,3808882652&fm=23&gp=0.jpg",
+"http://img2.imgtn.bdimg.com/it/u=527099330,3287794728&fm=23&gp=0.jpg",
+"http://img0.imgtn.bdimg.com/it/u=3112949488,2902759428&fm=23&gp=0.jpg",
+"http://img2.imgtn.bdimg.com/it/u=181129320,1094602898&fm=23&gp=0.jpg",
+"http://img2.imgtn.bdimg.com/it/u=2306853928,2618211896&fm=23&gp=0.jpg",
+"http://img4.imgtn.bdimg.com/it/u=905012644,2707244964&fm=23&gp=0.jpg",
+"http://img0.imgtn.bdimg.com/it/u=152306209,1936222373&fm=11&gp=0.jpg"
+];
+var index = 0,
+    len = imgs.length,
+    $progress = $('.progress');
+
+    PreLoadModel.PreLoad(imgs,{
+      each: function(count){
+        $progress.text(Math.round((count + 1) /len * 100) + '%');
+      },
+      all: function(){
+        $('.loading').hide();
+        document.title = '1/' + len;
+      }
+    });
+
+
+    $('.btn').on('click', function() {
+      if('pre' === $(this).data('control') ){//上
+        index = Math.max(0,--index);
+      }else{//下
+        index = Math.min(len - 1, ++index);
+      }
+      document.title = (index + 1) + "/" +len;
+      $("#img").attr('src', imgs[index]);
+    });
+</script>

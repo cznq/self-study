@@ -1,0 +1,46 @@
+<canvas id="myCanvas">canvas</canvas>
+<input type="file" id="myFile"/>
+<button id="downloadImageBtn">生成</button>
+<img src='' alt='from canvas' id="showimg"/>
+<script>
+var myCanvas = document.getElementById('myCanvas');
+var myFile = document.getElementById('myFile');
+var downloadImageBtn = document.getElementById('downloadImageBtn');
+var showimg = document.getElementById('showimg');
+
+
+function putImage2Canvas(event) {
+    var img = new Image();
+    img.src = event.target.result;
+    img.onload = function(){
+        myCanvas.width = img.width;
+        myCanvas.height = img.height;
+        var context = myCanvas.getContext('2d');
+        context.drawImage(img, 0, 0);
+        var imgdata = context.getImageData(0, 0, img.width, img.height);
+		context.fillStyle = '#00f';
+		context.font = 'italic 30px sans-serif';
+		context.textBaseline = 'top';
+		context.fillText('丸子君',0,40);
+    }
+}
+
+myFile.onchange = function(event) {
+    var selectedFile = event.target.files[0];
+	var reader = new FileReader();
+    reader.onload = putImage2Canvas;
+    reader.readAsDataURL(selectedFile);
+}
+
+
+
+downloadImageBtn.onclick = function(event) {
+	//var image = myCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream;Content-Disposition: attachment;filename=test.png");
+	//var image = myCanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+	//window.location.href=image;
+	var image = myCanvas.toDataURL();
+	showimg.src = image;
+}
+
+
+</script>
